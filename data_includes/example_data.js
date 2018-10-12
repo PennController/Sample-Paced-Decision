@@ -66,9 +66,16 @@ PennController.Template(  // Trials generated from design.csv from chunk_include
     newText("null", "")                     // Dummy, unprinted Text element, automatically selected upon timeout (see below)
     ,
     newTimer("delay", 1000)                 // 1s timer, then dummy text selected (if no selection in the meantime)
-        .settings.callback( 
-            getSelector("patch").testNot.selected()  // Select 'null' only if no selection yet
-                .success( getSelector("patch").select(getText("null")) )
+        .settings.callback(
+            getSelector("patch")
+                .testNot.selected()         // Select 'null' only if no selection yet
+                .success(
+                    newText("timesup", "Time's up!")
+                        .print()
+                    ,
+                    getSelector("patch")
+                        .select( getText("null") )
+                )
         )
         .start()
     ,
